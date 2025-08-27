@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey, Reaver - Discord Music Bot</title>
+    
+    <link rel="icon" href="images/heyreaverlogo.png" type="image/png">
+    <link rel="shortcut icon" href="images/heyreaverlogo.png" type="image/png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <meta property="og:title" content="Hey, Reaver - Discord Music Bot">
+    <meta property="og:description" content="Invite the bot and listen to music with your friends!">
+    <meta property="og:image" content="https://i.postimg.cc/BnT40ZkY/Group-29.png">
+    <meta property="og:url" content="https://reaver.is-a.dev/heyreaver">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hey, Reaver - Discord Music Bot">
+    <meta name="twitter:description" content="Invite the bot and listen to music with your friends!">
+    <meta name="twitter:image" content="https://i.postimg.cc/BnT40ZkY/Group-29.png">
+
+    <style>
+        :root {
+            --primary: #1DB954;
+            --secondary: #191414;
+            --accent: #3498db;
+            --text: #ffffff;
+            --background: #121212;
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --header-height: 70px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            padding-top: var(--header-height);
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            height: 60px;
+            background: rgba(18, 18, 18, 0.98);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(29, 185, 84, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .header-cta {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
+        }
+        
+        .header-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.6);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+        }
+        
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .cover-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-auto-rows: 150px;
+            gap: 10px;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            opacity: 0.3;
+        }
+        
+        .cover-item {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease;
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .cover-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .cover-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero .logo {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.6);
+        }
+        
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .cta-button:hover::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .features {
+            padding: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+        
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .commands {
+            padding: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .command-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .command-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .command-name {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .command-name i {
+            margin-right: 10px;
+        }
+        
+        .command-description {
+            opacity: 0.8;
+        }
+        
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .footer-link {
+            color: var(--text);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-link i {
+            margin-right: 8px;
+        }
+        
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .copyright {
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 50px auto;
+            padding: 0;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s;
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: var(--card-bg);
+            border-radius: 10px 10px 0 0;
+            z-index: 10;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .modal-title i {
+            margin-right: 10px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: var(--primary);
+        }
+        
+        .modal-body {
+            padding: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-section {
+            margin-bottom: 25px;
+        }
+        
+        .modal-section-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .modal-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .copy-link-btn {
+            background-color: rgba(29, 185, 84, 0.2);
+            color: var(--primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .copy-link-btn:hover {
+            background-color: rgba(29, 185, 84, 0.3);
+        }
+        
+        .copy-link-btn i {
+            margin-right: 5px;
+        }
+        
+        .copy-link-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 3000;
+        }
+        
+        .copy-link-notification.show {
+            opacity: 1;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(50, 50);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+        
+        .cover-item.loading {
+            background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .hero .logo {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: var(--header-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height));
+                background: var(--secondary);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 40px;
+                transition: left 0.3s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero .logo {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid, .commands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cover-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                grid-auto-rows: 100px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 30px auto;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <div class="logo">
+            <i class="fas fa-music"></i>
+            Hey, Reaver
+        </div>
+        
+        <nav class="nav-links" id="navLinks">
+            <a href="#features"><i class="fas fa-star"></i> Features</a>
+            <a href="#commands"><i class="fas fa-terminal"></i> Commands</a>
+            <a href="https://discord.gg/WpECjzjDAE" target="_blank"><i class="fas fa-users"></i> Our Server</a>
+        </nav>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+    
+    <div class="background-container">
+        <div class="cover-grid" id="coverGrid"></div>
+    </div>
+    
+    <div class="container">
+        <section class="hero">
+            <h1 class="logo">Hey, Reaver</h1>
+            <p class="tagline">A powerful music bot for Discord with YouTube and SoundCloud support, high quality audio, and intuitive controls.</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1213943377733877830&permissions=277062175744&integration_type=0&scope=bot" class="cta-button">Add to your server</a>
+        </section>
+        
+        <section class="features" id="features">
+            <h2 class="section-title">Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-volume-up"></i></div>
+                    <h3 class="feature-title">High Quality Audio</h3>
+                    <p class="feature-description">Enjoy music in high quality without delays or interruptions</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-list"></i></div>
+                    <h3 class="feature-title">Queue Management</h3>
+                    <p class="feature-description">Create playlists, manage playback queue with ease</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3 class="feature-title">Lyrics Search</h3>
+                    <p class="feature-description">Find song lyrics right in Discord with /lyrics command</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3 class="feature-title">Fast Response</h3>
+                    <p class="feature-description">Instant reaction to commands and minimal latency</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                    <h3 class="feature-title">Interactive Controls</h3>
+                    <p class="feature-description">Easy playback control through intuitive buttons</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                    <h3 class="feature-title">Platform Support</h3>
+                    <p class="feature-description">Works with YouTube, SoundCloud and other platforms</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="commands" id="commands">
+            <h2 class="section-title">Commands</h2>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-play"></i> /play [query]</div>
+                    <div class="command-description">Play a track or add to queue</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-pause"></i> /pause</div>
+                    <div class="command-description">Pause playback</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-play"></i> /resume</div>
+                    <div class="command-description">Resume playback</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-forward"></i> /skip</div>
+                    <div class="command-description">Skip current track</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-list-ol"></i> /queue</div>
+                    <div class="command-description">Show current queue</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-file-alt"></i> /lyrics [song]</div>
+                    <div class="command-description">Find song lyrics</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-trash"></i> /remove [number]</div>
+                    <div class="command-description">Remove track from queue</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-stop"></i> /stop</div>
+                    <div class="command-description">Stop playback and disconnect</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name"><i class="fas fa-info-circle"></i> /limits</div>
+                    <div class="command-description">Show current usage limits</div>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="https://reaver.is-a.dev/" class="footer-link" target="_blank"><i class="fas fa-comments"></i> Reaver.Entertainment</a>
+                <a href="#" class="footer-link" id="privacyLink"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                <a href="#" class="footer-link" id="termsLink"><i class="fas fa-file-contract"></i> Terms of Service</a>
+            </div>
+            <div class="copyright">© 2025 Hey, Reaver. Some rights reserved.</div>
+        </footer>
+    </div>
+
+    <div class="modal" id="privacyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-shield-alt"></i> Privacy Policy</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text"><strong>Last Updated: August 26, 2025</strong></p>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">1. Information Collection</h4>
+                    <p class="modal-text">The Bot may receive:</p>
+                    <p class="modal-text">- Your Discord user ID and username/nickname to display requests.</p>
+                    <p class="modal-text">- Server ID and channel ID where you use the Bot.</p>
+                    <p class="modal-text">- Information about tracks being played (title, link, source).</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">2. Information Usage</h4>
+                    <p class="modal-text">- For the Bot's functionality (music playback, queue management, track limits).</p>
+                    <p class="modal-text">- To display messages and interact with you through commands and buttons.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">3. Data Storage</h4>
+                    <p class="modal-text">- Data about tracks and server limits is stored in memory and not shared with third parties.</p>
+                    <p class="modal-text">- Downloaded audio files are temporarily stored in the downloads folder and automatically deleted after playback.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">4. Information Sharing</h4>
+                    <p class="modal-text">- We do not sell or transfer your personal data to third parties.</p>
+                    <p class="modal-text">- Data may only be used for the Bot's operation and supporting its functionality.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">5. Cookies and Tracking</h4>
+                    <p class="modal-text">- The Bot does not use cookies and does not track activity outside of Discord servers and voice channels.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">6. Policy Changes</h4>
+                    <p class="modal-text">- The developer may update the privacy policy.</p>
+                    <p class="modal-text">- Continued use of the Bot after changes means acceptance of the new version.</p>
+                </div>
+                
+                <button class="copy-link-btn" data-url="#privacy">
+                    <i class="fas fa-link"></i> Copy link to this policy
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-file-contract"></i> Terms of Service</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text"><strong>Last Updated: August 26, 2025</strong></p>
+                <p class="modal-text">Welcome! By using this Discord bot (hereinafter referred to as the "Bot"), you agree to these Terms of Use. If you do not agree with them, do not use the Bot.</p>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">1. Use of the Bot</h4>
+                    <p class="modal-text">- The Bot is provided as is for playing music and providing song lyrics.</p>
+                    <p class="modal-text">- You agree to use the Bot only for lawful purposes and within Discord's rules.</p>
+                    <p class="modal-text">- You are responsible for any actions performed through your Discord account using the Bot.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">2. Limitations</h4>
+                    <p class="modal-text">- Most servers have a track playback limit of 50 tracks per 24 hours.</p>
+                    <p class="modal-text">- There are no limits on the developer's server.</p>
+                    <p class="modal-text">- Violating limits or attempting to bypass them may result in blocking or restricting access to the Bot.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">3. Intellectual Property</h4>
+                    <p class="modal-text">- All rights to music, lyrics, and media belong to their respective rights holders.</p>
+                    <p class="modal-text">- The Bot does not claim rights to the content you play.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">4. Security</h4>
+                    <p class="modal-text">- The Bot can connect to voice channels on your server.</p>
+                    <p class="modal-text">- We do not collect your passwords and do not have access to Discord personal information except what is necessary for the Bot's operation (user ID, name, avatar).</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">5. Limitation of Liability</h4>
+                    <p class="modal-text">- The Bot is provided without warranties. The developer is not responsible for:</p>
+                    <p class="modal-text">- Data loss</p>
+                    <p class="modal-text">- Temporary Bot operation failures</p>
+                    <p class="modal-text">- Copyright infringement by third parties</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4 class="modal-section-title">6. Changes to Terms</h4>
+                    <p class="modal-text">- The developer reserves the right to change the terms at any time.</p>
+                    <p class="modal-text">- Continued use of the Bot after changes means you agree to the updated terms.</p>
+                </div>
+                
+                <button class="copy-link-btn" data-url="#terms">
+                    <i class="fas fa-link"></i> Copy link to these terms
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-link-notification" id="copyNotification">Link copied to clipboard!</div>
+
+    <script>
+        const mainHeader = document.getElementById('mainHeader');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const sectionTitles = document.querySelectorAll('.section-title');
+        const featureCards = document.querySelectorAll('.feature-card');
+        const commandCards = document.querySelectorAll('.command-card');
+        
+        const privacyModal = document.getElementById('privacyModal');
+        const termsModal = document.getElementById('termsModal');
+        const privacyLink = document.getElementById('privacyLink');
+        const termsLink = document.getElementById('termsLink');
+        const closeButtons = document.querySelectorAll('.modal-close');
+        const copyButtons = document.querySelectorAll('.copy-link-btn');
+        const copyNotification = document.getElementById('copyNotification');
+    
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainHeader.classList.add('scrolled');
+            } else {
+                mainHeader.classList.remove('scrolled');
+            }
+        });
+    
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+    
+        sectionTitles.forEach(title => observer.observe(title));
+        featureCards.forEach(card => observer.observe(card));
+        commandCards.forEach(card => observer.observe(card));
+
+        privacyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            privacyModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            termsModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                privacyModal.style.display = 'none';
+                termsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target === termsModal) {
+                termsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const url = window.location.origin + window.location.pathname + button.getAttribute('data-url');
+                navigator.clipboard.writeText(url).then(() => {
+                    copyNotification.classList.add('show');
+                    setTimeout(() => {
+                        copyNotification.classList.remove('show');
+                    }, 2000);
+                });
+            });
+        });
+
+        window.addEventListener('load', () => {
+            if (window.location.hash === '#privacy') {
+                privacyModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else if (window.location.hash === '#terms') {
+                termsModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - mainHeader.offsetHeight,
+                            behavior: 'smooth'
+                        });
+    
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                            mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                            mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
