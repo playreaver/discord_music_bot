@@ -1705,7 +1705,7 @@
                 termsModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
-            if (e.target === countryModal) {
+            if (e.target === countryDetectionModal) {
                 countryDetectionModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
@@ -1802,14 +1802,14 @@
             
             if (!country) {
                 setTimeout(() => {
-                    countryDetectionModal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+                    showCountryModal(); 
                 }, 2000);
-            } else if (country === 'Russia') {
-                widgetContainer.style.display = 'block';
+            } else {
+                const parsedCountry = JSON.parse(country);
+                handleCountrySelection(parsedCountry);
             }
         }
-        
+   
         window.addEventListener('load', () => {
             const serverCount = document.getElementById('serverCount');
             const userCount = document.getElementById('userCount');
