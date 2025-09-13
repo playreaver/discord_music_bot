@@ -338,6 +338,7 @@
         .feature-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
+            color: var(--primary);
         }
         
         .feature-description {
@@ -560,6 +561,121 @@
             opacity: 1;
         }
         
+        /* Country Modal Styles */
+        .country-modal-content {
+            background-color: var(--card-bg);
+            margin: 50px auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s;
+            position: relative;
+            text-align: center;
+        }
+        
+        .country-flag {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .country-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .country-question {
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .country-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .country-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .country-btn i {
+            margin-right: 8px;
+        }
+        
+        .country-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.6);
+        }
+        
+        .country-btn.change {
+            background-color: #555;
+        }
+        
+        .country-btn.change:hover {
+            background-color: #666;
+            box-shadow: 0 6px 20px rgba(85, 85, 85, 0.6);
+        }
+        
+        .country-select {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .country-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        /* Widget Container */
+        .widget-container {
+            display: none;
+            text-align: center;
+            margin: 60px auto 0px;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px; /* ограничение ширины для аккуратного вида */
+        }
+
+        .widget-container h1 {
+            margin-bottom: 50px;
+            color: var(--primary);
+        }
+
+        .widget-container iframe {
+            display: block;
+            margin: 0 auto; /* симметрично по центру */
+        }
+
+        /* NEW STYLES */
+        
+        /* Equalizer styles */
         .equalizer-container {
             display: flex;
             justify-content: center;
@@ -598,12 +714,14 @@
         .bar:nth-child(8) { animation-delay: 0.7s; height: 70%; }
         .bar:nth-child(9) { animation-delay: 0.8s; height: 30%; }
         .bar:nth-child(10) { animation-delay: 0.9s; height: 60%; }
-
+        
+        /* Neon text effect */
         .neon-text {
             text-shadow: var(--neon-glow);
             animation: pulsate 2s infinite alternate;
         }
-
+        
+        /* Glowing cards */
         .glow-card {
             position: relative;
             overflow: hidden;
@@ -625,7 +743,8 @@
         .glow-card:hover::before {
             opacity: 1;
         }
-
+        
+        /* Live stats counter */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -669,7 +788,8 @@
             opacity: 0.8;
             font-weight: 500;
         }
-
+        
+        /* Benefits section */
         .benefits {
             padding: 80px 0;
             position: relative;
@@ -725,6 +845,7 @@
             line-height: 1.6;
         }
         
+        /* Advanced equalizer controls */
         .equalizer-controls {
             display: flex;
             justify-content: center;
@@ -765,6 +886,7 @@
             box-shadow: 0 0 10px var(--primary);
         }
         
+        /* Scroll progress indicator */
         .progress-container {
             position: fixed;
             top: 0;
@@ -782,6 +904,7 @@
             transition: width 0.2s ease;
         }
         
+        /* Animation keyframes */
         @keyframes equalize {
             0%, 100% {
                 transform: scaleY(0.6);
@@ -954,6 +1077,16 @@
             .stats-container {
                 grid-template-columns: 1fr;
             }
+            
+            .country-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .country-btn {
+                width: 100%;
+                max-width: 250px;
+            }
         }
     </style>
 </head>
@@ -1051,6 +1184,12 @@
                 <div class="stat-number">24/7</div>
                 <div class="stat-label">Uptime</div>
             </div>
+        </div>
+        
+        <!-- Widget Container (initially hidden) -->
+        <div class="widget-container" id="widgetContainer">
+            <h1>Поддержите этот проект</h1>
+            <iframe src="https://yoomoney.ru/quickpay/fundraise/widget?billNumber=1COHMCLGUI8.250913&" width="500" height="400" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
         </div>
         
         <section class="benefits" id="benefits">
@@ -1176,6 +1315,84 @@
             <div class="copyright">© 2025 Hey, Reaver. Some rights reserved.</div>
         </footer>
     </div>
+
+    <div class="modal" id="countryDetectionModal">
+        <div class="country-modal-content">
+            <div class="country-flag" id="countryFlag">🌐</div>
+            <h3 class="country-name" id="countryName">Detecting your country...</h3>
+            <p class="country-question" id="countryQuestion">Please wait while we detect your location.</p>
+            
+            <div class="country-buttons">
+                <button class="country-btn" id="confirmCountryBtn">
+                    <i class="fas fa-check"></i> Yes, correct
+                </button>
+                <button class="country-btn change" id="changeCountryBtn">
+                    <i class="fas fa-exchange-alt"></i> No, change
+                </button>
+            </div>
+            
+            <div id="countrySelection" class="hidden">
+                <select class="country-select" id="countrySelect">
+                    <option value="">Select your country</option>
+                    <option value="China">China</option>
+                    <option value="India">India</option>
+                    <option value="USA">United States</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="Russia">Russia</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Ethiopia">Ethiopia</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="Vietnam">Vietnam</option>
+                    <option value="DR Congo">DR Congo</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="France">France</option>
+                    <option value="Italy">Italy</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Myanmar">Myanmar</option>
+                    <option value="South Korea">South Korea</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Sudan">Sudan</option>
+                    <option value="Ukraine">Ukraine</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Iraq">Iraq</option>
+                    <option value="Poland">Poland</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Uzbekistan">Uzbekistan</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Peru">Peru</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="Yemen">Yemen</option>
+                    <option value="Mozambique">Mozambique</option>
+                    <option value="North Korea">North Korea</option>
+                    <option value="Australia">Australia</option>
+                </select>
+                <button class="country-btn" id="saveCountryBtn" style="margin-top: 15px;">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal" id="privacyModal">
         <div class="modal-content">
@@ -1307,6 +1524,114 @@
         const copyNotification = document.getElementById('copyNotification');
         const scrollProgress = document.getElementById('scrollProgress');
         const eqSliders = document.querySelectorAll('.eq-slider');
+        
+        const countryDetectionModal = document.getElementById('countryDetectionModal');
+        const countryFlag = document.getElementById('countryFlag');
+        const countryName = document.getElementById('countryName');
+        const countryQuestion = document.getElementById('countryQuestion');
+        const confirmCountryBtn = document.getElementById('confirmCountryBtn');
+        const changeCountryBtn = document.getElementById('changeCountryBtn');
+        const countrySelection = document.getElementById('countrySelection');
+        const countrySelect = document.getElementById('countrySelect');
+        const saveCountryBtn = document.getElementById('saveCountryBtn');
+
+        async function detectUserCountry() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                return {
+                    country: data.country_name,
+                    code: data.country_code,
+                    city: data.city
+                };
+            } catch (error) {
+                console.error('Ошибка при определении страны:', error);
+
+                return {
+                    country: "Россия",
+                    code: "RU",
+                    city: "Москва"
+                };
+            }
+        }
+
+        function getFlagEmoji(countryCode) {
+            if (!countryCode) return "🌐";
+            
+            const codePoints = countryCode
+                .toUpperCase()
+                .split('')
+                .map(char => 127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
+
+        async function showCountryModal() {
+            const savedCountry = localStorage.getItem('userCountry');
+            if (savedCountry) {
+                handleCountrySelection(JSON.parse(savedCountry));
+                return;
+            }
+
+            countryName.textContent = "Определяем вашу страну...";
+            countryQuestion.textContent = "Пожалуйста, подождите, мы определяем ваше местоположение.";
+            countryFlag.textContent = "🌐";
+            changeCountryBtn.classList.add('hidden');
+            confirmCountryBtn.classList.add('hidden');
+
+            countryDetectionModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            const locationData = await detectUserCountry();
+            
+            countryName.textContent = locationData.country;
+            countryQuestion.textContent = `Мы определили вашу страну как ${locationData.country}. Это правильно?`;
+            countryFlag.textContent = getFlagEmoji(locationData.code);
+            
+            changeCountryBtn.classList.remove('hidden');
+            confirmCountryBtn.classList.remove('hidden');
+            
+            window.detectedLocation = locationData;
+        }
+
+        confirmCountryBtn.addEventListener('click', () => {
+            handleCountrySelection(window.detectedLocation);
+            countryDetectionModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        changeCountryBtn.addEventListener('click', () => {
+            countrySelection.classList.remove('hidden');
+            changeCountryBtn.classList.add('hidden');
+            confirmCountryBtn.classList.add('hidden');
+        });
+
+        saveCountryBtn.addEventListener('click', () => {
+            const selectedCountry = countrySelect.value;
+            if (!selectedCountry) return;
+
+            const customLocation = {
+                country: selectedCountry,
+                code: "", 
+                city: ""
+            };
+            
+            handleCountrySelection(customLocation);
+            countryDetectionModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        function handleCountrySelection(locationData) {
+            localStorage.setItem('userCountry', JSON.stringify(locationData));
+        
+            if (locationData.country === "Russia" || locationData.country === "Россия") {
+                widgetContainer.style.display = 'block';
+            } else {
+                widgetContainer.style.display = 'none';
+            }
+
+            console.log(`Выбранная страна: ${locationData.country}`);
+        }
     
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -1366,6 +1691,7 @@
             button.addEventListener('click', () => {
                 privacyModal.style.display = 'none';
                 termsModal.style.display = 'none';
+                countryModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             });
         });
@@ -1377,6 +1703,10 @@
             }
             if (e.target === termsModal) {
                 termsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target === countryModal) {
+                countryModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
         });
@@ -1401,6 +1731,8 @@
                 termsModal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             }
+
+            checkCountrySelection();
         });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1449,7 +1781,7 @@
                 }
             });
         });
-        
+
         function animateCounter(element, target, duration) {
             let start = 0;
             const increment = target / (duration / 16);
@@ -1463,6 +1795,19 @@
                 }
             };
             updateCounter();
+        }
+
+        function checkCountrySelection() {
+            const country = localStorage.getItem('userCountry');
+            
+            if (!country) {
+                setTimeout(() => {
+                    countryModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }, 2000);
+            } else if (country === 'Russia') {
+                widgetContainer.style.display = 'block';
+            }
         }
         
         window.addEventListener('load', () => {
