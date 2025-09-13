@@ -1546,12 +1546,12 @@
                     city: data.city
                 };
             } catch (error) {
-                console.error('Ошибка при определении страны:', error);
+                console.error('Error detecting country:', error);
 
                 return {
-                    country: "Россия",
+                    country: "Russia",
                     code: "RU",
-                    city: "Москва"
+                    city: "Moscow"
                 };
             }
         }
@@ -1572,20 +1572,20 @@
                 handleCountrySelection(JSON.parse(savedCountry));
                 return;
             }
-
-            countryName.textContent = "Определяем вашу страну...";
-            countryQuestion.textContent = "Пожалуйста, подождите, мы определяем ваше местоположение.";
+        
+            countryName.textContent = "Detecting your country...";
+            countryQuestion.textContent = "Please wait while we determine your location.";
             countryFlag.textContent = "🌐";
             changeCountryBtn.classList.add('hidden');
             confirmCountryBtn.classList.add('hidden');
-
+        
             countryDetectionModal.style.display = 'block';
             document.body.style.overflow = 'hidden';
             
             const locationData = await detectUserCountry();
             
             countryName.textContent = locationData.country;
-            countryQuestion.textContent = `Мы определили вашу страну как ${locationData.country}. Это правильно?`;
+            countryQuestion.textContent = `We have detected your country as ${locationData.country}. Is this correct?`;
             countryFlag.textContent = getFlagEmoji(locationData.code);
             
             changeCountryBtn.classList.remove('hidden');
