@@ -1119,6 +1119,55 @@
                 max-width: 250px;
             }
         }
+
+        .license-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .license-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.6);
+        }
+        
+        .license-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            transform-origin: 50% 50%;
+        }
+        
+        .license-button:hover::after {
+            animation: ripple 0.8s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(25);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1350,7 +1399,12 @@
                 <a href="#" class="footer-link" id="privacyLink"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
                 <a href="#" class="footer-link" id="termsLink"><i class="fas fa-file-contract"></i> Terms of Service</a>
             </div>
-            <div class="copyright">© 2025 Hey, Reaver. Some rights reserved.</div>
+            <div class="copyright">
+                © 2025 Hey, Reaver. 
+                <a class="license-button" href="https://github.com/playreaver/discord_music_bot/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
+                    Some rights reserved.
+                </a>
+            </div>
         </footer>
     </div>
 
