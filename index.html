@@ -660,7 +660,7 @@
             background-color: var(--card-bg);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 600px; /* ограничение ширины для аккуратного вида */
+            max-width: 600px; 
         }
 
         .widget-container h1 {
@@ -670,10 +670,26 @@
 
         .widget-container iframe {
             display: block;
-            margin: 0 auto; /* симметрично по центру */
+            margin: 0 auto; 
         }
 
-        /* NEW STYLES */
+        .widget-iframe-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 80%; 
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .widget-iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
         
         /* Equalizer styles */
         .equalizer-container {
@@ -1188,8 +1204,15 @@
         
         <!-- Widget Container (initially hidden) -->
         <div class="widget-container" id="widgetContainer">
-            <h1>Поддержите этот проект</h1>
-            <iframe src="https://yoomoney.ru/quickpay/fundraise/widget?billNumber=1COHMCLGUI8.250913&" width="500" height="400" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+            <h1>Support this project</h1>
+            <div class="widget-iframe-wrapper">
+                <iframe 
+                    src="https://yoomoney.ru/quickpay/fundraise/widget?billNumber=1COHMCLGUI8.250913&" 
+                    frameborder="0" 
+                    allowtransparency="true" 
+                    scrolling="no">
+                </iframe>
+            </div>
         </div>
         
         <section class="benefits" id="benefits">
